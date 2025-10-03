@@ -18,6 +18,7 @@ class SupplierProfile extends Model
         'address',
         'description',
         'is_verified',
+        'remarks',
     ];
 
     public function user(): BelongsTo

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SupplierProfile;
 use App\Models\SupplierDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class VerificationController extends Controller
 {
@@ -23,9 +24,21 @@ class VerificationController extends Controller
      */
     public function show(SupplierProfile $supplierProfile)
     {
-        // Eager load relasi untuk efisiensi query
         $supplierProfile->load('user', 'documents.documentType', 'documents.documentStatus');
-        return view('verificator.suppliers.show', compact('supplierProfile'));
+
+        // === TAMBAHKAN LOGIKA PENGECEKAN DI SINI ===
+        // Asumsi dokumen wajib adalah KTP, NPWP, SIUP (ID 1, 2, 3)
+        $requiredDocTypes = [1, 2, 3];
+        $uploadedRequiredDocs = $supplierProfile->documents->whereIn('document_type_id', $requiredDocTypes);
+
+        // Tombol verifikasi bisa aktif jika jumlah dokumen wajib yang diunggah sudah 3
+        // DAN semuanya sudah berstatus 'Disetujui' (ID 2)
+        $canBeVerified = ($uploadedRequiredDocs->count() >= count($requiredDocTypes)) && $uploadedRequiredDocs->every(function ($doc) {
+            return $doc->document_status_id == 2;
+        });
+        // === BATAS AKHIR LOGIKA PENGECEKAN ===
+
+        return view('verificator.suppliers.show', compact('supplierProfile', 'canBeVerified'));
     }
 
     /**
@@ -34,13 +47,21 @@ class VerificationController extends Controller
     public function updateDocumentStatus(Request $request, SupplierDocument $document)
     {
         $request->validate([
-            'status_id' => 'required|in:2,3', // 2 = Disetujui, 3 = Ditolak
+            'status_id' => 'required|in:1,2,3', // 2 = Disetujui, 3 = Ditolak
+            'remarks' => 'nullable|string|max:500', // Validasi untuk pesan
         ]);
 
-        $document->update(['document_status_id' => $request->status_id]);
+        $remarks = $request->input('remarks');
 
-        // Cek apakah semua dokumen supplier sudah disetujui
-        $this->checkAndUpdateSupplierVerificationStatus($document->supplierProfile);
+        // Jika disetujui, hapus pesan/remarks sebelumnya.
+        if ($request->status_id == 2) {
+            $remarks = null;
+        }
+
+        $document->update([
+            'document_status_id' => $request->status_id,
+            'remarks' => $remarks,
+        ]);
 
         return redirect()->back()->with('success', 'Status dokumen berhasil diperbarui.');
     }
@@ -71,5 +92,35 @@ class VerificationController extends Controller
         } else {
             $supplierProfile->update(['is_verified' => false]);
         }
+    }
+
+    public function verifySupplier(Request $request, SupplierProfile $supplierProfile)
+    {
+        // Toggle status verifikasi (jika sudah true jadi false, begitu sebaliknya)
+        $newStatus = !$supplierProfile->is_verified;
+        $supplierProfile->update(['is_verified' => $newStatus]);
+
+        $message = $newStatus ? 'Supplier berhasil diverifikasi.' : 'Verifikasi supplier berhasil dibatalkan.';
+
+        return redirect()->back()->with('success', $message);
+    }
+    
+    // app/Http/Controllers/Verificator/VerificationController.php
+    public function updateSupplierRemarks(Request $request, SupplierProfile $supplierProfile)
+    {
+        $request->validate(['remarks' => 'nullable|string']);
+        $supplierProfile->update(['remarks' => $request->remarks]);
+        return redirect()->back()->with('success', 'Pesan untuk supplier berhasil diperbarui.');
+    }
+
+    public function destroyDocument(SupplierDocument $document)
+    {
+        if (Storage::disk('public')->exists($document->path_file)) {
+            Storage::disk('public')->delete($document->path_file);
+        }
+
+        $document->delete();
+
+        return redirect()->back()->with('success', 'Dokumen berhasil dihapus.');
     }
 }

@@ -16,10 +16,17 @@ class DocumentController extends Controller
     public function index()
     {
         $supplierProfile = Auth::user()->supplierProfile;
-        $documents = SupplierDocument::where('supplier_profile_id', $supplierProfile->id)->get();
-        $documentTypes = DocumentType::all(); // Untuk dropdown pilihan tipe dokumen
+        $allDocuments = SupplierDocument::where('supplier_profile_id', $supplierProfile->id)
+                                ->with('documentType', 'documentStatus')
+                                ->get();
 
-        return view('documents.index', compact('documents', 'documentTypes'));
+        // Pisahkan dokumen yang ditolak (status ID 3) dari yang lain
+        $rejectedDocuments = $allDocuments->where('document_status_id', 3);
+        $documents = $allDocuments->where('document_status_id', '!=', 3);
+
+        $documentTypes = DocumentType::all();
+
+        return view('documents.index', compact('documents', 'rejectedDocuments', 'documentTypes'));
     }
 
     /**

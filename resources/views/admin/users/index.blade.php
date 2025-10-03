@@ -28,17 +28,41 @@
                             <td class="px-6 py-4">{{ $user->name }}</td>
                             <td class="px-6 py-4">{{ $user->email }}</td>
                             <td class="px-6 py-4">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    {{ $user->getRoleNames()->first() }}
+                                @php
+                                    $roleName = $user->getRoleNames()->first();
+                                    $badgeColor = '';
+                                    switch ($roleName) {
+                                        case 'admin':
+                                            $badgeColor = 'bg-yellow-100 text-yellow-800';
+                                            break;
+                                        case 'verifikator':
+                                            $badgeColor = 'bg-blue-100 text-blue-800';
+                                            break;
+                                        case 'pimpinan':
+                                            $badgeColor = 'bg-gray-100 text-gray-800';
+                                            break;
+                                        case 'operator_fakultas':
+                                            $badgeColor = 'bg-purple-100 text-purple-800';
+                                            break;
+                                        default:
+                                            $badgeColor = 'bg-green-100 text-green-800';
+                                    }
+                                @endphp
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $badgeColor }}">
+                                    {{ $roleName }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right text-sm font-medium">
-                                <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                <form action="#" method="POST" class="inline-block" onsubmit="confirmDelete(event)">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Hapus</button>
-                                </form>
+    {{-- Hanya tampilkan tombol jika user yang ditampilkan BUKAN user yang sedang login --}}
+                                @if($user->id !== Auth::id())
+                                    <a href="{{ route('admin.users.edit', $user) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+
+                                    <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="inline-block" onsubmit="confirmDelete(event)">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Hapus</button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @empty
