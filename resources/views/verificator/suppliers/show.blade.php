@@ -12,6 +12,43 @@
             </div>
         @endif
 
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-medium">Status Verifikasi Supplier</h3>
+                    @if($supplierProfile->is_verified)
+                        <p class="text-sm text-green-600 font-semibold mt-1">
+                            TERVERIFIKASI (Bisa mengelola produk)
+                        </p>
+                    @else
+                        <p class="text-sm text-yellow-600 font-semibold mt-1">
+                            BELUM TERVERIFIKASI
+                        </p>
+                    @endif
+                </div>
+
+                <form action="{{ route('verificator.suppliers.verify', $supplierProfile) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+
+                    @if($supplierProfile->is_verified)
+                         <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
+                            Batalkan Verifikasi
+                        </button>
+                    @else
+                        <button type="submit" 
+                                @if(!$canBeVerified) disabled @endif
+                                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                            Setujui Verifikasi
+                        </button>
+                    @endif
+                </form>
+            </div>
+            @if(!$supplierProfile->is_verified && !$canBeVerified)
+                <p class="text-xs text-gray-500 mt-2">Tombol "Setujui Verifikasi" akan aktif jika semua dokumen wajib (KTP, NPWP, SIUP) telah diunggah dan disetujui.</p>
+            @endif
+        </div>
+
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">
                 <h3 class="text-lg font-medium mb-4">Dokumen Terunggah</h3>

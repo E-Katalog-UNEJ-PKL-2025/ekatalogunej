@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Supplier\DocumentController;
 use App\Http\Controllers\Verificator\VerificationController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\RoleSwitcherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ Route::get('/', function () {
 
 // Route untuk dashboard utama (yang menampilkan produk)
 Route::get('/dashboard', DashboardController::class)
-    ->middleware(['auth', 'verified'])->name('dashboard');
+->middleware(['auth', 'verified'])->name('dashboard');
 
 // Grup untuk semua user yang sudah login
 Route::middleware('auth')->group(function () {
@@ -29,16 +30,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    
     // --- Route Khusus Supplier ---
     Route::resource('products', ProductController::class)->middleware('verified.supplier');
     Route::get('/documents', [DocumentController::class, 'index'])
-        ->name('documents.index')
-        ->middleware('role:supplier');
-
+    ->name('documents.index')
+    ->middleware('role:supplier');
+    
     Route::post('/documents', [DocumentController::class, 'store'])
-        ->name('documents.store')
-        ->middleware('role:supplier');
+    ->name('documents.store')
+    ->middleware('role:supplier');
+    
+    Route::get('/roles/revert', [RoleSwitcherController::class, 'revert'])->name('admin.roles.revert');
 });
 
 // --- Route Khusus Verifikator ---
@@ -50,11 +53,14 @@ Route::middleware(['auth', 'role:verifikator'])->prefix('verificator')->name('ve
     Route::patch('/suppliers/{supplierProfile}/remarks', [VerificationController::class, 'updateSupplierRemarks'])->name('suppliers.updateRemarks');
     Route::delete('/documents/{document}', [VerificationController::class, 'destroyDocument'])->name('documents.destroy');
 
+
 });
 
 // --- Route Khusus Admin ---
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', UserController::class);
+
+    Route::post('/roles/switch', [RoleSwitcherController::class, 'switch'])->name('roles.switch');
 });
 
 

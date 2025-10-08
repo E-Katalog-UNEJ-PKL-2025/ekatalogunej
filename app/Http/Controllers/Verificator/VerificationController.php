@@ -26,17 +26,13 @@ class VerificationController extends Controller
     {
         $supplierProfile->load('user', 'documents.documentType', 'documents.documentStatus');
 
-        // === TAMBAHKAN LOGIKA PENGECEKAN DI SINI ===
-        // Asumsi dokumen wajib adalah KTP, NPWP, SIUP (ID 1, 2, 3)
-        $requiredDocTypes = [1, 2, 3];
+        // Logika untuk mengecek apakah tombol verifikasi bisa aktif
+        $requiredDocTypes = [1, 2, 3]; // Asumsi ID 1, 2, 3 adalah KTP, NPWP, SIUP
         $uploadedRequiredDocs = $supplierProfile->documents->whereIn('document_type_id', $requiredDocTypes);
 
-        // Tombol verifikasi bisa aktif jika jumlah dokumen wajib yang diunggah sudah 3
-        // DAN semuanya sudah berstatus 'Disetujui' (ID 2)
         $canBeVerified = ($uploadedRequiredDocs->count() >= count($requiredDocTypes)) && $uploadedRequiredDocs->every(function ($doc) {
-            return $doc->document_status_id == 2;
+            return $doc->document_status_id == 2; // Cek apakah semua disetujui (ID 2)
         });
-        // === BATAS AKHIR LOGIKA PENGECEKAN ===
 
         return view('verificator.suppliers.show', compact('supplierProfile', 'canBeVerified'));
     }

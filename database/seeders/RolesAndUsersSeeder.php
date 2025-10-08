@@ -9,48 +9,41 @@ use Illuminate\Support\Facades\Hash;
 
 class RolesAndUsersSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Buat Roles
-        $adminRole = Role::create(['name' => 'admin']);
-        $supplierRole = Role::create(['name' => 'supplier']);
-        $verifikatorRole = Role::create(['name' => 'verifikator']);
-        $pimpinanRole = Role::create(['name' => 'pimpinan']);
-        $operatorRole = Role::create(['name' => 'operator_fakultas']);
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'supplier']); // Pastikan baris ini ada
+        Role::create(['name' => 'verifikator']);
+        Role::create(['name' => 'pimpinan']);
+        Role::create(['name' => 'operator_fakultas']);
 
         // Buat User Statis & berikan role
-        $admin = User::create([
+        User::create([
             'name' => 'Admin UNEJ',
             'email' => 'admin@gmail.com',
-            'password' => Hash::make('password') // ganti dengan password yang aman
-        ]);
-        $admin->assignRole($adminRole);
+            'password' => Hash::make('password')
+        ])->assignRole('admin');
 
-        $verifikator = User::create([
+        User::create([
             'name' => 'Verifikator UNEJ',
             'email' => 'verifikator@gmail.com',
             'password' => Hash::make('password')
-        ]);
-        $verifikator->assignRole($verifikatorRole);
+        ])->assignRole('verifikator');
 
-        $pimpinan = User::create([
+        User::create([
             'name' => 'Pimpinan UNEJ',
             'email' => 'pimpinan@gmail.com',
             'password' => Hash::make('password')
-        ]);
-        $pimpinan->assignRole($pimpinanRole);
+        ])->assignRole('pimpinan');
 
-        $operator = User::create([
+        User::create([
             'name' => 'Operator Fakultas UNEJ',
             'email' => 'operator@gmail.com',
             'password' => Hash::make('password')
-        ]);
-        $operator->assignRole($operatorRole);
+        ])->assignRole('operator_fakultas');
     }
 }

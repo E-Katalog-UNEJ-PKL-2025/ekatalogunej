@@ -11,13 +11,18 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+
+        $middleware->web(append: [
+            \App\Http\Middleware\HandleRoleSwitching::class,
+        ]);
+        
+        // Alias middleware yang sudah ada
         $middleware->alias([
             'verified.supplier' => \App\Http\Middleware\CheckSupplierVerification::class,
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
         ]);
+        
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
-
-    

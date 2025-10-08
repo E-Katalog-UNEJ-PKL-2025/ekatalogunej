@@ -11,49 +11,39 @@
         <ul class="space-y-2">
             {{-- Menu Dashboard --}}
             <li>
-                <a href="{{ route('dashboard') }}" 
-                   class="flex items-center p-2 rounded-md transition-colors 
-                          {{ Route::is('dashboard') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
+                <a href="{{ route('dashboard') }}" class="flex items-center p-2 rounded-md transition-colors {{ Route::is('dashboard') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
                     Dashboard
                 </a>
             </li>
 
-            {{-- Menu Khusus Supplier --}}
             @role('supplier')
                 @if(Auth::user()->supplierProfile && Auth::user()->supplierProfile->is_verified)
-                <li>
-                    <a href="{{ route('products.index') }}" 
-                       class="flex items-center p-2 rounded-md transition-colors 
-                              {{ Route::is('products.*') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                        Produk Saya
-                    </a>
-                </li>
+                    <li>
+                        <a href="{{ route('products.index') }}" class="flex items-center p-2 rounded-md transition-colors {{ Route::is('products.*') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                            Produk Saya
+                        </a>
+                    </li>
                 @endif
+
                 <li>
-                    <a href="{{ route('documents.index') }}" 
-                       class="flex items-center p-2 rounded-md transition-colors 
-                              {{ Route::is('documents.index') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
+                    <a href="{{ route('documents.index') }}" class="flex items-center p-2 rounded-md transition-colors {{ Route::is('documents.index') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                         Dokumen Verifikasi
                     </a>
                 </li>
             @endrole
 
-            {{-- Menu Khusus Verifikator --}}
             @role('verifikator')
             <li>
-                <a href="{{ route('verificator.suppliers.index') }}" 
-                   class="flex items-center p-2 rounded-md transition-colors 
-                          {{ Route::is('verificator.*') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
+                <a href="{{ route('verificator.suppliers.index') }}" class="flex items-center p-2 rounded-md transition-colors {{ Route::is('verificator.*') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     Verifikasi Supplier
                 </a>
             </li>
             @endrole
 
-            {{-- Menu Khusus Admin --}}
             @role('admin')
                 @if (Route::has('admin.users.index'))
                 <li>
