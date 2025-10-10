@@ -8,6 +8,7 @@ use App\Http\Controllers\Supplier\DocumentController;
 use App\Http\Controllers\Verificator\VerificationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleSwitcherController;
+use App\Http\Controllers\Admin\RolePermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +17,12 @@ use App\Http\Controllers\Admin\RoleSwitcherController;
 */
 
 // Arahkan halaman utama ke halaman login
+// Route::get('/', function () {
+//     return redirect()->route('login');
+// });
+
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('welcome');
 });
 
 // Route untuk dashboard utama (yang menampilkan produk)
@@ -45,7 +50,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // --- Route Khusus Verifikator ---
-Route::middleware(['auth', 'role:verifikator'])->prefix('verificator')->name('verificator.')->group(function () {
+Route::middleware(['auth', 'can.verify'])->prefix('verificator')->name('verificator.')->group(function () {
     Route::get('/suppliers', [VerificationController::class, 'index'])->name('suppliers.index');
     Route::get('/suppliers/{supplierProfile}', [VerificationController::class, 'show'])->name('suppliers.show');
     Route::patch('/documents/{document}/update-status', [VerificationController::class, 'updateDocumentStatus'])->name('documents.updateStatus');
@@ -53,14 +58,15 @@ Route::middleware(['auth', 'role:verifikator'])->prefix('verificator')->name('ve
     Route::patch('/suppliers/{supplierProfile}/remarks', [VerificationController::class, 'updateSupplierRemarks'])->name('suppliers.updateRemarks');
     Route::delete('/documents/{document}', [VerificationController::class, 'destroyDocument'])->name('documents.destroy');
 
-
 });
 
 // --- Route Khusus Admin ---
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', UserController::class);
 
-    Route::post('/roles/switch', [RoleSwitcherController::class, 'switch'])->name('roles.switch');
+    Route::get('roles', [RolePermissionController::class, 'index'])->name('roles.index');
+    Route::get('roles/{role}/edit', [RolePermissionController::class, 'edit'])->name('roles.edit');
+    Route::put('roles/{role}', [RolePermissionController::class, 'update'])->name('roles.update');Route::post('/roles/switch', [RoleSwitcherController::class, 'switch'])->name('roles.switch');
 });
 
 

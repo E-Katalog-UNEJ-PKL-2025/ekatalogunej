@@ -76,15 +76,6 @@
             </div>
         </div>
     @else
-        {{-- Tampilan Default untuk Role Lain --}}
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-            <div class="p-6 h-64 flex items-center justify-center bg-cover bg-center text-white" style="background-image: url('https://picsum.photos/1200/400');">
-                <div class="text-center bg-black bg-opacity-50 p-6 rounded-lg">
-                    <h2 class="text-4xl font-bold">Selamat Datang di E-Katalog UNEJ</h2>
-                    <p class="mt-2">Temukan berbagai barang dan jasa dari mitra terpercaya kami.</p>
-                </div>
-            </div>
-        </div>
     @endrole
 
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

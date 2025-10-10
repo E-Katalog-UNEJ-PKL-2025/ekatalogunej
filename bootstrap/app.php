@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'verified.supplier' => \App\Http\Middleware\CheckSupplierVerification::class,
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+            'can.verify' => \App\Http\Middleware\CheckVerificationAccess::class,
         ]);
         
     })

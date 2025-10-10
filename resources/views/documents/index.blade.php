@@ -26,7 +26,7 @@
         @if(Auth::user()->hasRole('supplier') && !Auth::user()->supplierProfile->is_verified)
             <div class="p-4 bg-yellow-100 text-yellow-800 rounded-lg shadow-sm">
                 <p class="font-medium">Peringatan: Akun Anda masih belum terverifikasi.</p>
-                <p class="text-sm">Silakan unggah dokumen yang diperlukan dan tunggu pesan atau persetujuan dari Verifikator.</p>
+                <p class="text-sm">Silakan unggah dokumen yang diperlukan dan tunggu pesan atau persetujuan dari Verifikator atau Admin.</p>
             </div>
         @endif
 

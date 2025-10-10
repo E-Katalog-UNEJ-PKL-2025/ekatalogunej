@@ -7,11 +7,13 @@
     </x-slot>
 
     {{-- KITA PINDAHKAN TOMBOL KE SINI --}}
-    <div class="mb-4 flex justify-end">
-        <a href="{{ route('products.create') }}" class="px-4 py-2 bg-unej-green text-white rounded-md hover:bg-opacity-90 shadow-sm">
-            + Tambah Produk
-        </a>
-    </div>
+    @can('products.create')
+        <div class="mb-4 flex justify-end">
+            <a href="{{ route('products.create') }}" class="px-4 py-2 bg-unej-green text-white ...">
+                + Tambah Produk
+            </a>
+        </div>
+    @endcan
 
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900">
@@ -34,12 +36,17 @@
                <tbody class="bg-white divide-y divide-gray-200">
                     @forelse($products as $product)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                @if($product->image_path)
-                                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="h-12 w-12 object-cover rounded-md">
-                                @else
-                                    <span class="text-xs text-gray-500">No Image</span>
-                                @endif
+                            <td class="px-6 py-4 text-right text-sm font-medium">
+                                @can('products.edit')
+                                    <a href="{{ route('products.edit', $product) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                @endcan
+                                @can('products.delete')
+                                    <form action="{{ route('products.destroy', $product) }}" method="POST" ...>
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Hapus</button>
+                                    </form>
+                                @endcan
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{{ $product->name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-gray-700">Rp {{ number_format($product->price, 0, ',', '.') }}</td>

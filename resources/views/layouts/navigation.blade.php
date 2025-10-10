@@ -9,7 +9,7 @@
         </div>
     @elseif(Auth::user()->hasRole('admin'))
         {{-- Dropdown untuk Admin asli --}}
-        <form action="{{ route('admin.roles.switch') }}" method="POST" class="flex items-center">
+        {{-- <form action="{{ route('admin.roles.switch') }}" method="POST" class="flex items-center">
             @csrf
             <label for="role-switcher" class="text-sm text-gray-500 mr-2">Switch Role:</label>
             <select name="role" id="role-switcher" class="border-gray-300 rounded-md shadow-sm text-sm py-1" onchange="this.form.submit()">
@@ -19,7 +19,7 @@
                 <option value="pimpinan">Pimpinan</option>
                 <option value="operator_fakultas">Operator Fakultas</option>
             </select>
-        </form>
+        </form> --}}
     @endif
 
     {{-- Dropdown Nama Pengguna --}}

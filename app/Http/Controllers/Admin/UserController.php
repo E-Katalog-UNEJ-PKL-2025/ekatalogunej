@@ -13,9 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::whereHas('roles', function($q){
-            $q->where('name', '!=', 'supplier');
-        })->get();
+        $users = User::with('roles')->latest()->get();
 
         return view('admin.users.index', compact('users'));
     }
