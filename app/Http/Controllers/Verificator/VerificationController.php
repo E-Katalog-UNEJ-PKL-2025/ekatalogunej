@@ -26,8 +26,7 @@ class VerificationController extends Controller
     {
         $supplierProfile->load('user', 'documents.documentType', 'documents.documentStatus');
 
-        // Logika untuk mengecek apakah tombol verifikasi bisa aktif
-        $requiredDocTypes = [1, 2, 3]; // Asumsi ID 1, 2, 3 adalah KTP, NPWP, SIUP
+        $requiredDocTypes = [1, 2, 3]; // Asumsi ID 1,2,3 utk KTP, NPWP, SIUP
         $uploadedRequiredDocs = $supplierProfile->documents->whereIn('document_type_id', $requiredDocTypes);
 
         $canBeVerified = ($uploadedRequiredDocs->count() >= count($requiredDocTypes)) && $uploadedRequiredDocs->every(function ($doc) {

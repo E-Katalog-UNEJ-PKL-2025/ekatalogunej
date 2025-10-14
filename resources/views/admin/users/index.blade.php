@@ -5,11 +5,14 @@
         </h2>
     </x-slot>
 
+    {{-- LINDUNGI TOMBOL INI DENGAN @can('users.create') --}}
+    @can('users.create')
     <div class="mb-4 flex justify-end">
         <a href="{{ route('admin.users.create') }}" class="px-4 py-2 bg-unej-green text-white rounded-md hover:bg-opacity-90 shadow-sm">
             + Tambah User
         </a>
     </div>
+    @endcan
 
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900">
@@ -53,15 +56,20 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right text-sm font-medium">
-    {{-- Hanya tampilkan tombol jika user yang ditampilkan BUKAN user yang sedang login --}}
                                 @if($user->id !== Auth::id())
-                                    <a href="{{ route('admin.users.edit', $user) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-
-                                    <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="inline-block" onsubmit="confirmDelete(event)">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Hapus</button>
-                                    </form>
+                                    {{-- LINDUNGI LINK EDIT DENGAN @can('users.edit') --}}
+                                    @can('users.edit')
+                                        <a href="{{ route('admin.users.edit', $user) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                    @endcan
+                                    
+                                    {{-- LINDUNGI FORM HAPUS DENGAN @can('users.delete') --}}
+                                    @can('users.delete')
+                                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="inline-block" onsubmit="confirmDelete(event)">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Hapus</button>
+                                        </form>
+                                    @endcan
                                 @endif
                             </td>
                         </tr>

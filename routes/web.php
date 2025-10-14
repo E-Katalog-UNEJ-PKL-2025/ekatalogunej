@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // --- Route Khusus Verifikator ---
-Route::middleware(['auth', 'can.verify'])->prefix('verificator')->name('verificator.')->group(function () {
+Route::middleware(['auth', 'can:suppliers.verify'])->prefix('verificator')->name('verificator.')->group(function () {
     Route::get('/suppliers', [VerificationController::class, 'index'])->name('suppliers.index');
     Route::get('/suppliers/{supplierProfile}', [VerificationController::class, 'show'])->name('suppliers.show');
     Route::patch('/documents/{document}/update-status', [VerificationController::class, 'updateDocumentStatus'])->name('documents.updateStatus');
