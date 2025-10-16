@@ -34,12 +34,10 @@
             <div class="max-w-7xl mx-auto p-6 lg:p-8">
                 <div class="flex flex-col md:flex-row items-center justify-center">
                     
-                    {{-- BAGIAN KANAN (LOGO) DIPINDAH KE SINI --}}
                     <div class="w-full md:w-1/2 flex justify-center mb-8 md:mb-0">
                         <img src="{{ asset('images/logo-unej.png') }}" alt="Logo UNEJ" class="w-64 h-64 md:w-80 md:h-80">
                     </div>
 
-                    {{-- BAGIAN KIRI (TEKS) SEKARANG DI KANAN --}}
                     <div class="w-full md:w-1/2 text-white text-center md:text-left pl-0 md:pl-16">
                         <h1 class="text-5xl font-bold mb-4">E-Catalog</h1>
                         <p class="text-lg text-gray-300">

@@ -15,16 +15,20 @@ class DocumentController extends Controller
      */
     public function index()
     {
+        // Cek jika pengguna BUKAN supplier
+        if (!Auth::user()->hasRole('supplier')) {
+            // Tampilkan view yang sama, tapi dengan pesan error
+            return view('documents.index_for_non_supplier');
+        }
+
+        // Kode yang sudah ada untuk supplier
         $supplierProfile = Auth::user()->supplierProfile;
-        $allDocuments = SupplierDocument::where('supplier_profile_id', $supplierProfile->id)
-                                ->with('documentType', 'documentStatus')
-                                ->get();
+        $documents = SupplierDocument::where('supplier_profile_id', $supplierProfile->id)->get();
+        $documentTypes = DocumentType::all(); 
 
         // Pisahkan dokumen yang ditolak (status ID 3) dari yang lain
-        $rejectedDocuments = $allDocuments->where('document_status_id', 3);
-        $documents = $allDocuments->where('document_status_id', '!=', 3);
-
-        $documentTypes = DocumentType::all();
+        $rejectedDocuments = $documents->where('document_status_id', 3);
+        $documents = $documents->where('document_status_id', '!=', 3);
 
         return view('documents.index', compact('documents', 'rejectedDocuments', 'documentTypes'));
     }
@@ -34,6 +38,10 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::user()->hasRole('supplier')) {
+            abort(403, 'Hanya supplier yang bisa mengunggah dokumen.');
+        }
+        
         $request->validate([
             'document_type_id' => 'required|exists:document_types,id',
             'document_file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
