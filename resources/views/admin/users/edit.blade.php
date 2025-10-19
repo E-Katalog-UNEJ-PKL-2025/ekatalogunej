@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <x-primary-button class="bg-unej-green">{{ __('Update') }}</x-primary-button>
+                    <x-primary-button class="bg-unej-action">{{ __('Update') }}</x-primary-button>
                     <a href="{{ route('admin.users.index') }}" class="text-gray-600 hover:text-gray-900">Batal</a>
                 </div>
             </form>

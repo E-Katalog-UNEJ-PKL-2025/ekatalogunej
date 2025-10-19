@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <div class="mt-6">
-                        <x-primary-button class="bg-unej-green">Unggah</x-primary-button>
+                        <x-primary-button class="bg-unej-action">Unggah</x-primary-button>
                     </div>
                 </form>
             </div>

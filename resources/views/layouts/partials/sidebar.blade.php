@@ -1,86 +1,118 @@
-<aside class="w-64 bg-unej-green text-white min-h-screen p-4">
-    <div class="flex items-center mb-8">
-        <img src="{{ asset('images/logo-unej.png') }}" alt="Logo UNEJ" class="w-12 h-12 mr-2">
-        <div>
-            <h2 class="text-xl font-bold">E-Katalog</h2>
-            <p class="text-sm">Universitas Jember</p>
-        </div>
-    </div>
-
-    <nav>
-        <ul class="space-y-2">
-            {{-- Menu Dashboard (Tampil jika punya izin 'dashboard.view') --}}
-            @can('dashboard.view')
-            <li>
-                <a href="{{ route('dashboard') }}" class="flex items-center p-2 rounded-md transition-colors {{ Route::is('dashboard') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
-                    Dashboard
-                </a>
-            </li>
-            @endcan
-
-            {{-- Menu Produk Saya (Tampil jika punya izin 'products.view') --}}
-            @can('products.view')
-                @if(Auth::user()->supplierProfile && Auth::user()->supplierProfile->is_verified)
-                <li>
-                    <a href="{{ route('products.index') }}" class="flex items-center p-2 rounded-md transition-colors {{ Route::is('products.*') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                        Produk Saya
-                    </a>
-                </li>
-                @endif
-            @endcan
-
-            {{-- Menu Dokumen Verifikasi (Tampil jika punya izin 'documents.view') --}}
-            @can('documents.view')
-            <li>
-                <a href="{{ route('documents.index') }}" class="flex items-center p-2 rounded-md transition-colors {{ Route::is('documents.index') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                    Dokumen Verifikasi
-                </a>
-            </li>
-            @endcan
-
-            {{-- Menu Verifikasi Supplier (Tampil jika punya izin 'suppliers.verify') --}}
-            @can('suppliers.verify')
-            <li>
-                <a href="{{ route('verificator.suppliers.index') }}" class="flex items-center p-2 rounded-md transition-colors {{ Route::is('verificator.*') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    Verifikasi Supplier
-                </a>
-            </li>
-            @endcan
-
-            {{-- Menu Khusus Admin (Dropdown) --}}
-            @if(Auth::user()->can('users.view') || Auth::user()->can('roles.view'))
-            <div x-data="{ open: {{ (Route::is('admin.users.*') || Route::is('admin.roles.*')) ? 'true' : 'false' }} }">
-                <button @click="open = ! open" class="w-full flex items-center justify-between p-2 rounded-md transition-colors text-white hover:bg-white hover:text-unej-green">
-                    <span class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                        <span>Manajemen User</span>
-                    </span>
-                    <svg class="w-4 h-4 transition-transform" :class="{'rotate-180': open}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                    </svg>
-                </button>
-                <div x-show="open" class="mt-1 ml-4 space-y-2">
-                    @can('users.view')
-                    <li>
-                        <a href="{{ route('admin.users.index') }}" class="flex items-center p-2 rounded-md transition-colors text-sm {{ Route::is('admin.users.*') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
-                            Kelola User
-                        </a>
-                    </li>
-                    @endcan
-                    @can('roles.view')
-                    <li>
-                        <a href="{{ route('admin.roles.index') }}" class="flex items-center p-2 rounded-md transition-colors text-sm {{ Route::is('admin.roles.*') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
-                            Kelola Role
-                        </a>
-                    </li>
-                    @endcan
+<aside id="sidebar" class="sidebar">
+                @if(Route::is('profile.*'))
+                <div id="profile-nav">
+                    <nav class="sidebar-nav">
+                        <h3 class="sidebar-section-title">Akun Saya</h3>
+                        <a href="{{route('profile.index')}}" class="sidebar-link {{ Route::is('profile.index') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">Profil</a>
+                        <a href="{{route('profile.edit')}}" class="sidebar-link {{ Route::is('profile.edit') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">Ubah Password</a>
+                        <a href="{{route('dashboard')}}" class="sidebar-link">Dashboard</a>
+                    </nav>
                 </div>
-            </div>
-            @endif
-        </ul>
-    </nav>
-</aside>
+                @else
+                <div id="main-nav">
+                    <nav class="sidebar-nav">
+                        <a href="{{route('dashboard')}}" data-content="dashboardHome" class="sidebar-link {{ Route::is('dashboard') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">Dashboard</a>
+                        @role('admin')
+                        <!-- Admin -->
+                        
+                        {{-- Menu Khusus Admin (Dropdown) --}}
+                            @if(Auth::user()->can('users.view') || Auth::user()->can('roles.view'))
+                            <div x-data="{ open: {{ (Route::is('admin.users.*') || Route::is('admin.roles.*')) ? 'true' : 'false' }} }">
+                                <button @click="open = ! open" class="sidebar-link {{ Route::is('admin.users.*','admin.roles.*') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">
+                                    <span class="flex items-center">
+
+                                        <span>Manajemen User</span>
+                                    </span>
+                                    <svg class="w-4 h-4 transition-transform" :class="{'rotate-180': open}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                </button>
+                                <div x-show="open" class="mt-1 ml-4 space-y-2">
+                                    @can('users.view')
+                                    <li>
+                                        <a href="{{ route('admin.users.index') }}" class="sidebar-link {{ Route::is('admin.users.*') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">
+                                            Kelola User
+                                        </a>
+                                    </li>
+                                    @endcan
+                                    @can('roles.view')
+                                    <li>
+                                        <a href="{{ route('admin.roles.index') }}" class="sidebar-link {{ Route::is('admin.roles.*') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">
+                                            Kelola Role
+                                        </a>
+                                    </li>
+                                    @endcan
+                                </div>
+                            </div>
+                            @endif
+                        @endrole
+                        @can('products.view')
+                        @if(Auth::user()->supplierProfile && Auth::user()->supplierProfile->is_verified)
+                            <!-- Supplier -->
+                            <a href="{{ route('products.index') }}" data-content="testis" class="sidebar-link {{ Route::is('products.*') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">Produk Saya</a>
+                        @endif
+                        @endcan
+                        <!-- Pimpinan -->
+                        @role('pimpinan')
+                        <a href="#" data-content="catalogReport" class="sidebar-link">Laporan Catalog</a>
+                        @endrole
+                        <!-- Verifikator -->
+                        
+                        @role('supplier')
+                        @can('documents.view')
+                        <a href="{{ route('documents.index') }}" data-content="verifySuppliers" class="sidebar-link {{ Route::is('documents.index') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">Verifikasi Supplier</a>
+                        @endcan
+                        @endrole
+                        
+                        
+                        @can('suppliers.verify')
+                        <a href="{{ route('verificator.suppliers.index') }}" data-content="dashboardHome" class="sidebar-link {{ Route::is('verificator.suppliers.*') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">Menu verifikasi</a>
+                        @endcan
+
+                        <!-- Operator Fakultas -->
+                        <a href="{{route('profile.index')}}" data-content="ProfilSaya" class="sidebar-link">Profil Saya</a>
+
+
+                    </nav>
+                </div>
+                @endif
+                <div class="sidebar-footer">
+                    <a href="#" class="sidebar-footerhelp">Bantuan</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                            this.closest('form').submit();" class="sidebar-footerlogout">
+                            Logout
+                        </a>
+                    </form>
+                </div>
+                {{-- <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const sidebarLinks = document.querySelectorAll('.sidebar-nav .sidebar-link');
+                        const dropdownToggles = document.querySelectorAll('.has-dropdown');
+
+
+                        
+                    // Event listener for all sidebar links
+                    sidebarLinks.forEach(link => {
+                        if (!link.classList.contains('has-dropdown')) {
+                            link.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                const contentId = this.dataset.content;
+                                showContent(contentId);
+                                setActiveLink(this);
+                            });
+                        }
+                    });
+
+                    // Event listener for dropdown toggles
+                    dropdownToggles.forEach(toggle => {
+                        toggle.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            this.parentElement.classList.toggle('open');
+                        });
+                    });
+                    });
+                </script> --}}
+            </aside>

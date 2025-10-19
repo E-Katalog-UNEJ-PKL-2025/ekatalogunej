@@ -17,6 +17,8 @@ export default {
             },
             // PASTIKAN BLOK INI ADA
             colors: {
+                'unej-primary': '#022C43',
+                'unej-action': '#FFC72E',
                 'unej-green': '#006633',
                 'unej-yellow': '#FFCC00',
             },
