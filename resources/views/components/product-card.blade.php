@@ -6,7 +6,7 @@
         <h3 class="font-bold text-lg text-gray-800 truncate">{{ $product->name }}</h3>
         <p class="text-md font-semibold text-gray-700">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
         <div class="mt-auto pt-2">
-             <p class="text-sm text-gray-500">Oleh: {{ $product->supplierProfile->user->name ?? 'N/A' }}</p>
+             <p class="text-sm text-gray-500">{{ $product->supplierProfile->user->name ?? 'N/A' }}</p>
         </div>
     </div>
 </div>
