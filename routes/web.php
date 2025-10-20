@@ -70,5 +70,4 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 
-// File route bawaan Breeze untuk autentikasi
 require __DIR__.'/auth.php';
