@@ -57,16 +57,12 @@ class User extends Authenticatable
     protected static function booted(): void
     {
         static::deleting(function (User $user) {
-            // Cek apakah user ini punya profil supplier
             if ($user->supplierProfile) {
 
-                // 1. Hapus semua produk terkait
                 $user->supplierProfile->products()->delete();
 
-                // 2. Hapus semua dokumen terkait
                 $user->supplierProfile->documents()->delete();
 
-                // 3. Hapus profil supplier itu sendiri
                 $user->supplierProfile->delete();
             }
         });
