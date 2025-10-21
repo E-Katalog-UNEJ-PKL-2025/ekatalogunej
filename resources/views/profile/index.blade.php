@@ -13,7 +13,7 @@
                         </h2>
 
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                            {{ __("Update your account's profile information and email address.") }}
+                            {{ __("Update nama akun dan email disini jika diperlukan.") }}
                         </p>
                     </header>
 
@@ -39,16 +39,16 @@
                             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                                 <div>
                                     <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                                        {{ __('Your email address is unverified.') }}
+                                        {{ __('Email anda tidak terverifikasi.') }}
 
                                         <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                                            {{ __('Click here to re-send the verification email.') }}
+                                            {{ __('Klik disini jika ingin re-send pesan email verikasi.') }}
                                         </button>
                                     </p>
 
                                     @if (session('status') === 'verification-link-sent')
                                         <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                                            {{ __('A new verification link has been sent to your email address.') }}
+                                            {{ __('Link verifikasi sudah terkirim ke Email anda.') }}
                                         </p>
                                     @endif
                                 </div>

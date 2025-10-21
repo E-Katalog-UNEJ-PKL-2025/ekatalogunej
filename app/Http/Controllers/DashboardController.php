@@ -12,13 +12,16 @@ class DashboardController extends Controller
     public function __invoke(Request $request): View
     {
         // Data untuk katalog umum
-        $products = Product::latest()->take(12)->get();
+        $products = Product::with('category', 'supplierProfile.user') 
+                       ->latest()
+                       ->take(12)
+                       ->get();
 
         // Data statistik untuk Pimpinan & Admin
         $totalSuppliers = User::role('supplier')->count();
         $totalProducts = Product::count();
-        $totalPimpinan = User::role('pimpinan')->count(); // <-- Tambah ini
-        $totalVerifikator = User::role('verifikator')->count(); // <-- Tambah ini
+        $totalPimpinan = User::role('pimpinan')->count(); 
+        $totalVerifikator = User::role('verifikator')->count(); 
 
         // Kirim semua data ke view
         return view('dashboard', compact(

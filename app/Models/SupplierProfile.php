@@ -34,4 +34,11 @@ class SupplierProfile extends Model
     {
         return $this->hasMany(SupplierDocument::class);
     }
+
+    
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

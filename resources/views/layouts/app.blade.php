@@ -36,7 +36,7 @@
                     <a href="/dashboard">
                      <img src="{{ asset('images/logo-unej.png') }}" alt="Logo">
                     </a>
-                    <h1>e-Catalog</h1>
+                    <h1 style="font-weight:bold">e-Katalog</h1>
                 </div>
             </div>
             @if (Route::is('dashboard'))

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role; 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB; // <-- TAMBAHKAN BARIS INI
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests; // <-- TAMBAHKAN INI
 
 
@@ -65,6 +66,7 @@ class UserController extends Controller
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
+            'role' => $request->role,
         ]);
         if ($request->filled('password')) {
             $user->update(['password' => Hash::make($request->password)]);
@@ -79,7 +81,25 @@ class UserController extends Controller
         if ($user->id === Auth::id()) {
             return redirect()->route('admin.users.index')->with('error', 'Anda tidak bisa menghapus akun Anda sendiri.');
         }
+        DB::transaction(function () use ($user) {
+        // Cek apakah user ini memiliki profil supplier
+        if ($user->supplierProfile) {
+            
+            // 1. Hapus semua produk yang terkait (Anak #1)
+            $user->supplierProfile->products()->delete();
+
+            // 2. Hapus semua dokumen supplier yang terkait (Anak #2)
+            // 'supplierDocuments' adalah nama relasi di model SupplierProfile
+            $user->supplierProfile->documents()->delete(); // <-- TAMBAHKAN BARIS INI
+
+            // 3. Setelah SEMUA anak terhapus, baru hapus profil supplier-nya (Orang Tua)
+            $user->supplierProfile->delete();
+        }
+
+        // 4. Terakhir, hapus user-nya (Kakek-Nenek)
         $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
+    });
+
+    return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus beserta data terkaitnya.');
     }
 }

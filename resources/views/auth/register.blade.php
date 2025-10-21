@@ -4,7 +4,7 @@
     <meta charset="utf-g">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>e-Catalog - Login</title>
+    <title>e-Katalog - Login</title>
     <link rel="stylesheet" href="css/auth.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -14,8 +14,8 @@
         <a href="/"><img src="images/logo-unej.png" alt="Logo" class="auth-logo"></a>
         <div class="auth-card">
             <div class="auth-header">
-                <h2>e-Catalog</h2>
-                <p>Sign in to your admin account or create a new one</p>
+                <h2>e-Katalog</h2>
+                <p>Register jika belum memiliki akun supplier, jika sudah silahkan Log in</p>
             </div>
             <div class="auth-toggle">
                 <a href="{{ route('login') }}">Log In</a>
@@ -25,22 +25,22 @@
                 @csrf
                 <div class="form-group">
                     <x-input-label for="name" value="Nama Supplier (Perusahaan/Pribadi)" />
-                    <x-text-input id="name" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                    <x-text-input id="name" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" placeholder="Masukkan nama perusahaan anda" />
                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
                 <div class="form-group">
                     <x-input-label for="email" value="Email" />
-                    <x-text-input id="email" type="email" name="email" :value="old('email')" required autocomplete="username" />
+                    <x-text-input id="email" type="email" name="email" :value="old('email')" required autocomplete="username" placeholder="Masukkan alamat Email anda" />
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
                 <div class="form-group">
                     <x-input-label for="password" value="Password" />
-                    <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                    <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" placeholder="Buat password yang anda inginkan" />
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
                 <div class="form-group">
                     <x-input-label for="password_confirmation" value="Konfirmasi Password" />
-                    <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+                    <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="Silahkan Konfirmasi Password Anda" />
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>
                 <div class="form-group-checkbox">

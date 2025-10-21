@@ -30,11 +30,24 @@
                 <div>
                     <x-input-label for="role" value="Pilih Role" />
                     <select name="role" id="role" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" required>
+                        @if($user->hasRole('supplier'))
+
+                            <option value="supplier" disabled class="text-red-500" title="Role 'supplier' tidak dapat diubah." @selected($user->hasRole('supplier'))>
+                                supplier (Tidak Dapat Diubah) 
+                            </option>
+
+                        @else
                         @foreach($roles as $role)
+                        {{-- Saya bingung kenapa tidak kedetect role user suppliernya --}}
+                            
+                            {{--  --}}
+
                             <option value="{{ $role->name }}" @selected($user->hasRole($role->name))>
                                 {{ $role->name }}
                             </option>
+                            
                         @endforeach
+                        @endif
                     </select>
                 </div>
 

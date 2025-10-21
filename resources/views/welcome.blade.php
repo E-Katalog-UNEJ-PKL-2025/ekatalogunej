@@ -19,7 +19,7 @@
 
         <!-- Div konten teks sekarang di sebelah kanan -->
         <div class="welcome-content" id="welcome-content">
-            <h1>e-Catalog</h1>
+            <h1>e-Katalog</h1>
             <p>
                 Selamat datang di platform e-katalog Universitas Jember.
                 Sistem pengadaan barang dan jasa yang terintegrasi untuk memenuhi

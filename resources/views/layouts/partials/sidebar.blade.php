@@ -5,7 +5,7 @@
                         <h3 class="sidebar-section-title">Akun Saya</h3>
                         <a href="{{route('profile.index')}}" class="sidebar-link {{ Route::is('profile.index') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">Profil</a>
                         <a href="{{route('profile.edit')}}" class="sidebar-link {{ Route::is('profile.edit') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">Ubah Password</a>
-                        <a href="{{route('dashboard')}}" class="sidebar-link">Dashboard</a>
+                        <a href="{{route('dashboard')}}" class="sidebar-link {{ Route::is('dashboard') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">Dashboard</a>
                     </nav>
                 </div>
                 @else
@@ -70,7 +70,7 @@
                         @endcan
 
                         <!-- Operator Fakultas -->
-                        <a href="{{route('profile.index')}}" data-content="ProfilSaya" class="sidebar-link">Profil Saya</a>
+                        <a href="{{route('profile.index')}}" data-content="ProfilSaya" class="sidebar-link {{ Route::is('profile.*') ? 'active' : 'text-white hover:bg-white hover:text-unej-green' }}">Profil Saya</a>
 
 
                     </nav>
