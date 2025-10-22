@@ -17,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($suppliers as $supplier)
+                    @forelse($suppliers as $supplier)
                         <tr>
                             <td class="px-6 py-4">{{ $supplier->user->name }}</td>
                             <td class="px-6 py-4">{{ $supplier->user->email }}</td>
@@ -36,7 +36,13 @@
                                 <a href="{{ route('verificator.suppliers.show', $supplier) }}" class="text-indigo-600 hover:text-indigo-900">Lihat Dokumen</a>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                                Belum ada Supplier yang mendaftar.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

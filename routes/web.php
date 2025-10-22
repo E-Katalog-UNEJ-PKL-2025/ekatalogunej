@@ -40,12 +40,12 @@ Route::middleware('auth')->group(function () {
     // --- Route Khusus Supplier ---
     Route::resource('products', ProductController::class)->middleware('verified.supplier');
     Route::get('/documents', [DocumentController::class, 'index'])
-    ->name('documents.index')
-    ->middleware('role:supplier');
+    ->name('documents.index');
+    // ->middleware('role:supplier');
     
     Route::post('/documents', [DocumentController::class, 'store'])
-    ->name('documents.store')
-    ->middleware('role:supplier');
+    ->name('documents.store');
+    // ->middleware('role:supplier');
     
     Route::get('/roles/revert', [RoleSwitcherController::class, 'revert'])->name('admin.roles.revert');
 });
@@ -71,5 +71,4 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 
-// File route bawaan Breeze untuk autentikasi
 require __DIR__.'/auth.php';
