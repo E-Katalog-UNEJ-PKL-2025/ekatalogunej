@@ -16,11 +16,6 @@ use App\Http\Controllers\Admin\RolePermissionController;
 |--------------------------------------------------------------------------
 */
 
-// Arahkan halaman utama ke halaman login
-// Route::get('/', function () {
-//     return redirect()->route('login');
-// });
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -58,6 +53,8 @@ Route::middleware(['auth', 'can:suppliers.verify'])->prefix('verificator')->name
     Route::patch('/suppliers/{supplierProfile}/remarks', [VerificationController::class, 'updateSupplierRemarks'])->name('suppliers.updateRemarks');
     Route::delete('/documents/{document}', [VerificationController::class, 'destroyDocument'])->name('documents.destroy');
 
+    Route::get('/hps', [ProductController::class, 'verifikasiHpsList'])->name('hps.list');
+    Route::patch('/hps/{product}', [ProductController::class, 'updateStatusHps'])->name('hps.update');
 });
 
 // --- Route Khusus Admin ---

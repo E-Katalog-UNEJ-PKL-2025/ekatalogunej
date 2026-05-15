@@ -43,12 +43,33 @@
 
             {{-- Menu Verifikasi Supplier (Tampil jika punya izin 'suppliers.verify') --}}
             @can('suppliers.verify')
-            <li>
-                <a href="{{ route('verificator.suppliers.index') }}" class="flex items-center p-2 rounded-md transition-colors {{ Route::is('verificator.*') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    Verifikasi Supplier
-                </a>
-            </li>
+            <div x-data="{ open: {{ (Route::is('verificator.*')) ? 'true' : 'false' }} }">
+                <button @click="open = ! open" class="w-full flex items-center justify-between p-2 rounded-md transition-colors text-white hover:bg-white hover:text-unej-green">
+                    <span class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span>Menu Verifikasi</span>
+                    </span>
+                    <svg class="w-4 h-4 transition-transform" :class="{'rotate-180': open}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </button>
+                
+                <div x-show="open" class="mt-1 ml-4 space-y-2">
+                    {{-- Verifikasi Dokumen Kelayakan --}}
+                    <li>
+                        <a href="{{ route('verificator.suppliers.index') }}" class="flex items-center p-2 rounded-md transition-colors text-sm {{ Route::is('verificator.suppliers.*') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
+                            Cek Dokumen Supplier
+                        </a>
+                    </li>
+                    
+                    {{-- FITUR BARU: Verifikasi HPS --}}
+                    <li>
+                        <a href="{{ route('verificator.hps.list') }}" class="flex items-center p-2 rounded-md transition-colors text-sm {{ Route::is('verificator.hps.*') ? 'bg-white text-unej-green font-semibold' : 'text-white hover:bg-white hover:text-unej-green' }}">
+                            Cek Harga / HPS
+                        </a>
+                    </li>
+                </div>
+            </div>
             @endcan
 
             {{-- Menu Khusus Admin (Dropdown) --}}
