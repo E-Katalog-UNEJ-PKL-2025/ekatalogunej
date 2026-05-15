@@ -8,7 +8,7 @@
     {{-- LINDUNGI TOMBOL INI DENGAN @can('users.create') --}}
     @can('users.create')
     <div class="mb-4 flex justify-end">
-        <a href="{{ route('admin.users.create') }}" class="px-4 py-2 bg-unej-green text-white rounded-md hover:bg-opacity-90 shadow-sm">
+        <a href="{{ route('admin.users.create') }}" class="px-4 py-2 bg-unej-primary text-white rounded-md hover:bg-opacity-90 shadow-sm">
             + Tambah User
         </a>
     </div>

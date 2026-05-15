@@ -30,16 +30,29 @@
                 <div>
                     <x-input-label for="role" value="Pilih Role" />
                     <select name="role" id="role" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" required>
+                        @if($user->hasRole('supplier'))
+
+                            <option value="supplier" disabled class="text-red-500" title="Role 'supplier' tidak dapat diubah." @selected($user->hasRole('supplier'))>
+                                supplier (Tidak Dapat Diubah) 
+                            </option>
+
+                        @else
                         @foreach($roles as $role)
+                        {{-- Saya bingung kenapa tidak kedetect role user suppliernya --}}
+                            
+                            {{--  --}}
+
                             <option value="{{ $role->name }}" @selected($user->hasRole($role->name))>
                                 {{ $role->name }}
                             </option>
+                            
                         @endforeach
+                        @endif
                     </select>
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <x-primary-button class="bg-unej-green">{{ __('Update') }}</x-primary-button>
+                    <x-primary-button class="bg-unej-action">{{ __('Update') }}</x-primary-button>
                     <a href="{{ route('admin.users.index') }}" class="text-gray-600 hover:text-gray-900">Batal</a>
                 </div>
             </form>

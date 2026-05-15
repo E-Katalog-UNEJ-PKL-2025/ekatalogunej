@@ -26,7 +26,7 @@
                                 <div>
                                     <label class="inline-flex items-center">
                                         <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
-                                               class="rounded border-gray-300 text-unej-green shadow-sm focus:ring-unej-green"
+                                               class="rounded border-gray-300 text-unej-primary shadow-sm focus:ring-unej-green"
                                                @if($role->hasPermissionTo($permission->name)) checked @endif>
                                         <span class="ml-2 text-sm">{{ explode('.', $permission->name)[1] }}</span>
                                     </label>
@@ -37,7 +37,7 @@
                     @endforeach
                 </div>
                 <div class="mt-6">
-                    <x-primary-button class="bg-unej-green">Simpan Perubahan</x-primary-button>
+                    <x-primary-button class="bg-unej-action">Simpan Perubahan</x-primary-button>
                 </div>
             </form>
         </div>

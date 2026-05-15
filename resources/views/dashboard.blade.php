@@ -6,6 +6,7 @@
     </x-slot>
 
     <div x-data="{ showModal: false, selectedProduct: null }">
+        @can('dashboard.view')
     {{-- Pesan Peringatan untuk Supplier Belum Terverifikasi --}}
         @if(Auth::user()->hasRole('supplier') && Auth::user()->supplierProfile && !Auth::user()->supplierProfile->is_verified)
             <div class="mb-6 p-4 bg-yellow-100 text-yellow-800 rounded-lg shadow-sm">
@@ -95,6 +96,12 @@
         </div>
         
         <x-product-detail-modal />
+        @else
+            <div class="mb-6 p-4 bg-yellow-100 text-yellow-800 rounded-lg shadow-sm">
+                <p class="font-medium text-center">Anda tidak memiliki izin untuk melihat Dashboard</p>
+            </div>
+        @endcan
+
     </div>
 
 </x-app-layout>
