@@ -11,6 +11,13 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+
+    public function show(Request $request): View
+    {
+        return view('profile.index', [
+            'user' => $request->user(),
+        ]);
+    }
     /**
      * Display the user's profile form.
      */
@@ -30,17 +37,6 @@ class ProfileController extends Controller
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
-        }
-
-        if ($request->user()->hasRole('supplier')) {
-            // Pastikan supplierProfile ada, jika tidak, buat baru
-            $supplierProfile = $request->user()->supplierProfile()->firstOrCreate([]);
-
-            $supplierProfile->update([
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'description' => $request->description,
-            ]);
         }
 
         $request->user()->save();

@@ -3,20 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
     public function __invoke(Request $request): View
     {
-        // Ambil semua produk, misalnya 12 produk terbaru
-        $products = Product::latest()->take(12)->get();
+        // Data untuk katalog umum
+        $products = Product::with('category', 'supplierProfile.user') 
+                       ->latest()
+                       ->take(12)
+                       ->get();
 
-        // Kirim data produk ke view dashboard
-        return view('dashboard', compact('products'));
+        // Data statistik untuk Pimpinan & Admin
+        $totalSuppliers = User::role('supplier')->count();
+        $totalProducts = Product::count();
+        $totalPimpinan = User::role('pimpinan')->count(); 
+        $totalVerifikator = User::role('verifikator')->count(); 
+
+        // Kirim semua data ke view
+        return view('dashboard', compact(
+            'products', 
+            'totalSuppliers', 
+            'totalProducts', 
+            'totalPimpinan', 
+            'totalVerifikator'
+        ));
     }
 }

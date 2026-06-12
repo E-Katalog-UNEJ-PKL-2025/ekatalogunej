@@ -18,6 +18,7 @@ class SupplierProfile extends Model
         'address',
         'description',
         'is_verified',
+        'remarks',
     ];
 
     public function user(): BelongsTo
@@ -25,12 +26,21 @@ class SupplierProfile extends Model
         return $this->belongsTo(User::class);
     }
 
-    // --- TAMBAHKAN FUNGSI DI BAWAH INI ---
-    /**
-     * Get all of the documents for the SupplierProfile.
-     */
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    // TAMBAHKAN FUNGSI INI (seharusnya sudah ada dari sebelumnya)
     public function documents(): HasMany
     {
         return $this->hasMany(SupplierDocument::class);
+    }
+
+    
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

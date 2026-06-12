@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Database\Eloquent\Relations\HasOne; // Tambahkan ini
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\SupplierProfile;
 
 class User extends Authenticatable
 {
@@ -51,5 +52,19 @@ class User extends Authenticatable
     public function supplierProfile(): HasOne
     {
         return $this->hasOne(SupplierProfile::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (User $user) {
+            if ($user->supplierProfile) {
+
+                $user->supplierProfile->products()->delete();
+
+                $user->supplierProfile->documents()->delete();
+
+                $user->supplierProfile->delete();
+            }
+        });
     }
 }

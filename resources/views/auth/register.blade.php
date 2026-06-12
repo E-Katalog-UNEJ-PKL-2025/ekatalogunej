@@ -1,62 +1,55 @@
-<x-guest-layout>
-    <div class="flex items-center justify-center min-h-screen bg-gray-100">
-        <div class="flex w-full max-w-5xl bg-white rounded-lg shadow-lg overflow-hidden">
-
-            <div class="hidden md:flex flex-col items-center justify-center w-5/12 bg-unej-green text-white p-12">
-                <img src="{{ asset('images/logo-unej.png') }}" alt="Logo UNEJ" class="w-32 h-32 mb-4">
-                <h1 class="text-3xl font-bold mb-2">E-Katalog</h1>
-                <p class="text-center">Universitas Jember</p>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-g">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>e-Katalog - Login</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+</head>
+<body>
+    <div id="registerPage" class="page auth-page">
+        <a href="/"><img src="images/logo-unej.png" alt="Logo" class="auth-logo"></a>
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>e-Katalog</h2>
+                <p>Register jika belum memiliki akun supplier, jika sudah silahkan Log in</p>
             </div>
-
-            <div class="w-full md:w-7/12 p-12">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">Daftar Akun Supplier</h2>
-                <p class="mb-4 text-sm text-gray-600">
-                    Fitur pendaftaran ini hanya diperuntukkan bagi Supplier. Untuk peran lain, akun akan dibuatkan oleh Admin.
-                </p>
-
-                <form method="POST" action="{{ route('register') }}">
-                    @csrf
-
-                    <div>
-                        <x-input-label for="name" value="Nama Supplier (Perusahaan/Pribadi)" />
-                        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                    </div>
-
-                    <div class="mt-4">
-                        <x-input-label for="email" value="Email" />
-                        <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                    </div>
-
-                    <div class="mt-4">
-                        <x-input-label for="password" value="Password" />
-                        <x-text-input id="password" class="block mt-1 w-full"
-                                        type="password"
-                                        name="password"
-                                        required autocomplete="new-password" />
-                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                    </div>
-
-                    <div class="mt-4">
-                        <x-input-label for="password_confirmation" value="Konfirmasi Password" />
-                        <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                        type="password"
-                                        name="password_confirmation" required autocomplete="new-password" />
-                        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                    </div>
-
-                    <div class="flex items-center justify-between mt-6">
-                        <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                            Sudah punya akun?
-                        </a>
-
-                        <x-primary-button class="ms-4 bg-unej-green hover:bg-opacity-90">
-                            {{ __('Register') }}
-                        </x-primary-button>
-                    </div>
-                </form>
+            <div class="auth-toggle">
+                <a href="{{ route('login') }}">Log In</a>
+                <a href="{{ route('register') }}" class="active">Register</a>
             </div>
+            <form action="{{ route('register') }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <x-input-label for="name" value="Nama Supplier (Perusahaan/Pribadi)" />
+                    <x-text-input id="name" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" placeholder="Masukkan nama perusahaan anda" />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                </div>
+                <div class="form-group">
+                    <x-input-label for="email" value="Email" />
+                    <x-text-input id="email" type="email" name="email" :value="old('email')" required autocomplete="username" placeholder="Masukkan alamat Email anda" />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                </div>
+                <div class="form-group">
+                    <x-input-label for="password" value="Password" />
+                    <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" placeholder="Buat password yang anda inginkan" />
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                </div>
+                <div class="form-group">
+                    <x-input-label for="password_confirmation" value="Konfirmasi Password" />
+                    <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="Silahkan Konfirmasi Password Anda" />
+                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                </div>
+                <div class="form-group-checkbox">
+                    <input type="checkbox" id="is-supplier" required>
+                    <label for="is-supplier">Mendaftar Sebagai Supplier</label>
+                </div>
+                <button type="submit" class="btn btn-action full-width">{{ __('Register') }}</button>
+            </form>
         </div>
     </div>
-</x-guest-layout>
+</body>
+</html>
